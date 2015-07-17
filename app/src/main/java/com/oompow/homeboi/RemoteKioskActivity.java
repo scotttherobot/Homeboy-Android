@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -30,6 +31,8 @@ public class RemoteKioskActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Disable the lock screen!!
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
         setContentView(R.layout.activity_remote_kiosk);
 
         if (Build.VERSION.SDK_INT < 16) {
@@ -73,12 +76,14 @@ public class RemoteKioskActivity extends ActionBarActivity {
                     buildDynamicButtons();
                 } catch (Exception e) {
                     Log.e("KioskActivity", "Error fetching config! Exception!");
+                    toast("Error applying configuration.");
                 }
             }
 
             @Override
             public void onFailure(int statusCode, String response) {
                 Log.e("KioskActivity", "Failed to fetch configuration.");
+                toast("Failed to fetch configuration. Status: " + statusCode);
             }
         });
     }
@@ -165,8 +170,26 @@ public class RemoteKioskActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void toast(String message) {
+        Toast toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+        toast.show();
+    }
+
     @Override
     // Override the back button.
     public void onBackPressed () {
+    }
+
+    @Override
+    // Let's DESTROY ALL SYSTEM NOTIFICATIONS!!
+    // This is to disable the power off on long-press thing.
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (!hasFocus) {
+            // Uh oh. We lost focus. Let's grab it back!!!
+            Log.i("KioskActivity", "Snatching focus back!!");
+            Intent closeDialog = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
+            sendBroadcast(closeDialog);
+        }
     }
 }

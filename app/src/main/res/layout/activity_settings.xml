@@ -45,4 +45,16 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:onClick="saveClicked" />
+
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Kiosk mode"
+        android:id="@+id/kioskModeCheckbox"
+        android:layout_below="@+id/remoteId"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:checked="false"
+        android:layout_alignRight="@+id/settingsLabel"
+        android:layout_alignEnd="@+id/settingsLabel" />
 </RelativeLayout>

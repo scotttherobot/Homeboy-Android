@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -54,10 +55,13 @@ public class SettingsActivity extends ActionBarActivity {
     public void saveClicked(View v) {
         EditText server = (EditText)findViewById(R.id.serverAddress);
         EditText remote = (EditText)findViewById(R.id.remoteId);
+        CheckBox kiosk = (CheckBox)findViewById(R.id.kioskModeCheckbox);
+
         SharedPreferences.Editor editor = KioskApplication.getInstance().getPreferences().edit();
 
         editor.putString(KioskApplication.PREF_SERVER_ADDRESS, server.getText().toString());
         editor.putString(KioskApplication.PREF_REMOTE_ID, remote.getText().toString());
+        editor.putBoolean(KioskApplication.PREF_KIOSK_MODE, kiosk.isChecked());
         editor.commit();
 
         Toast toast = Toast.makeText(this, "Saved!", Toast.LENGTH_SHORT);
