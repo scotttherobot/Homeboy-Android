@@ -187,9 +187,14 @@ public class RemoteKioskActivity extends ActionBarActivity {
         super.onWindowFocusChanged(hasFocus);
         if (!hasFocus) {
             // Uh oh. We lost focus. Let's grab it back!!!
-            Log.i("KioskActivity", "Snatching focus back!!");
-            Intent closeDialog = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
-            sendBroadcast(closeDialog);
+            // But only if we're in kiosk kmode.
+            if (prefs.getBoolean(KioskApplication.PREF_KIOSK_MODE, false)) {
+                Log.i("KioskActivity", "Snatching focus back!!");
+                Intent closeDialog = new Intent(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
+                sendBroadcast(closeDialog);
+            } else {
+                Log.i("KioskActivity", "We lost focus, but we're not in kiosk mode.");
+            }
         }
     }
 }

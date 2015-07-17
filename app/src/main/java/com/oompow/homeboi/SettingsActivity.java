@@ -21,6 +21,7 @@ public class SettingsActivity extends ActionBarActivity {
 
         EditText server = (EditText)findViewById(R.id.serverAddress);
         EditText remote = (EditText)findViewById(R.id.remoteId);
+        CheckBox kiosk = (CheckBox)findViewById(R.id.kioskModeCheckbox);
         SharedPreferences prefs = KioskApplication.getInstance().getPreferences();
 
         String serveraddr = prefs.getString(KioskApplication.PREF_SERVER_ADDRESS, "");
@@ -28,6 +29,7 @@ public class SettingsActivity extends ActionBarActivity {
 
         server.setText(serveraddr);
         remote.setText(prefs.getString(KioskApplication.PREF_REMOTE_ID, ""));
+        kiosk.setChecked(prefs.getBoolean(KioskApplication.PREF_KIOSK_MODE, false));
     }
 
     @Override
